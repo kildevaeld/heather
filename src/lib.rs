@@ -189,3 +189,7 @@ pub type BoxFuture<'a, T> =
 #[cfg(all(feature = "alloc", feature = "send"))]
 pub type BoxFuture<'a, T> =
     core::pin::Pin<alloc::boxed::Box<dyn core::future::Future<Output = T> + 'a + Send>>;
+
+pub trait HFuture: Future + HSend {}
+
+impl<T> HFuture for T where T: Future + HSend {}
