@@ -153,3 +153,31 @@ pub type Lock<T> = parking_lot::RwLock<T>;
 
 #[cfg(all(feature = "std", feature = "send", not(feature = "parking-lot")))]
 pub type Lock<T> = std::sync::RwLock<T>;
+
+#[cfg(not(feature = "send"))]
+pub trait HSend {}
+
+#[cfg(not(feature = "send"))]
+impl<T> HSend for T {}
+
+#[cfg(not(feature = "send"))]
+pub trait HSync {}
+
+#[cfg(not(feature = "send"))]
+impl<T> HSync for T {}
+
+#[cfg(feature = "send")]
+pub trait HSend: Send {}
+
+#[cfg(feature = "send")]
+impl<T> HSend for T where T: Send {}
+
+#[cfg(feature = "send")]
+pub trait HSync: Sync {}
+
+#[cfg(feature = "send")]
+impl<T> HSync for T where T: Sync {}
+
+pub trait HSendSync: HSend + HSync {}
+
+impl<T> HSendSync for T where T: HSend + HSync {}
