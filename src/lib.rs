@@ -1,15 +1,15 @@
 #![no_std]
 
-#[cfg(feature = "rc")]
+#[cfg(feature = "alloc")]
 extern crate alloc;
 
 #[cfg(feature = "std")]
 extern crate std;
 
-#[cfg(all(not(feature = "send"), feature = "rc"))]
+#[cfg(all(not(feature = "send"), feature = "alloc"))]
 pub type Hrc<T> = alloc::rc::Rc<T>;
 
-#[cfg(all(feature = "send", feature = "rc"))]
+#[cfg(all(feature = "send", feature = "alloc"))]
 pub type Hrc<T> = alloc::sync::Arc<T>;
 
 #[derive(Debug)]
@@ -181,3 +181,11 @@ impl<T> HSync for T where T: Sync {}
 pub trait HSendSync: HSend + HSync {}
 
 impl<T> HSendSync for T where T: HSend + HSync {}
+
+#[cfg(all(feature = "alloc", not(feature = "send")))]
+pub type BoxFuture<'a, T> =
+    core::pin::Pin<alloc::boxed::Box<dyn core::future::Future<Output = T> + 'a>>;
+
+#[cfg(all(feature = "alloc", feature = "send"))]
+pub type BoxFuture<'a, T> =
+    core::pin::Pin<alloc::boxed::Box<dyn core::future::Future<Output = T> + 'a + Send>>;

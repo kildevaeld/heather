@@ -6,8 +6,8 @@ edition = "2024"
 [features]
 default = []
 send = ["spin"]
-std = ["rc"]
-rc = []
+std = ["alloc"]
+alloc = []
 parking-lot = ["dep:parking_lot", "std"]
 
 [dependencies]
