@@ -2,6 +2,13 @@
 name = "heather"
 version = "0.1.0"
 edition = "2024"
+keywords = []
+categories = ["no-std"]
+authors = ["Rasmus Kildevæld <rasmuskildevaeld@gmail.com>"]
+repository = "https://github.com/kildevaeld/heather"
+license = "MIT"
+readme = "README.md"
+description = "Nostd tools"
 
 [features]
 default = []
