@@ -1,5 +1,7 @@
 #![no_std]
 
+use futures_core::Stream;
+
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
@@ -193,3 +195,13 @@ pub type BoxFuture<'a, T> =
 pub trait HFuture: Future + HSend {}
 
 impl<T> HFuture for T where T: Future + HSend {}
+
+pub trait HStream: Stream + HSend {}
+
+impl<T> HStream for T where T: Stream + HSend {}
+
+#[cfg(all(feature = "alloc", not(feature = "send")))]
+pub type HBoxError<'a> = alloc::boxed::Box<dyn core::error::Error + 'a>;
+
+#[cfg(all(feature = "alloc", feature = "send"))]
+pub type HBoxError<'a> = alloc::boxed::Box<dyn core::error::Error + Send + Sync + 'a>;
