@@ -185,11 +185,11 @@ pub trait HSendSync: HSend + HSync {}
 impl<T> HSendSync for T where T: HSend + HSync {}
 
 #[cfg(all(feature = "alloc", not(feature = "send")))]
-pub type BoxFuture<'a, T> =
+pub type HBoxFuture<'a, T> =
     core::pin::Pin<alloc::boxed::Box<dyn core::future::Future<Output = T> + 'a>>;
 
 #[cfg(all(feature = "alloc", feature = "send"))]
-pub type BoxFuture<'a, T> =
+pub type HBoxFuture<'a, T> =
     core::pin::Pin<alloc::boxed::Box<dyn core::future::Future<Output = T> + 'a + Send>>;
 
 pub trait HFuture: Future + HSend {}
