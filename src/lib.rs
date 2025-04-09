@@ -205,3 +205,9 @@ pub type HBoxError<'a> = alloc::boxed::Box<dyn core::error::Error + 'a>;
 
 #[cfg(all(feature = "alloc", feature = "send"))]
 pub type HBoxError<'a> = alloc::boxed::Box<dyn core::error::Error + Send + Sync + 'a>;
+
+#[cfg(all(feature = "alloc", not(feature = "send")))]
+pub type HBoxAny<'a> = alloc::boxed::Box<dyn core::any::Any + 'a>;
+
+#[cfg(all(feature = "alloc", feature = "send"))]
+pub type HBoxAny<'a> = alloc::boxed::Box<dyn core::any::Any + Send + Sync + 'a>;
