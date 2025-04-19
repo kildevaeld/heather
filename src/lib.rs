@@ -216,7 +216,10 @@ pub trait Executor: HSendSync {
     type Error;
     type Future<T>: Future<Output = core::result::Result<T::Output, Self::Error>> + HSend
     where
-        T: Future + 'static;
+        T: Future + 'static,
+        T::Output: HSend + 'static;
 
-    fn spawn<T: Future + HSend + 'static>(&self, future: T) -> Self::Future<T>;
+    fn spawn<T: Future + HSend + 'static>(&self, future: T) -> Self::Future<T>
+    where
+        T::Output: 'static + HSend;
 }
