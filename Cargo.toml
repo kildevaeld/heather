@@ -24,5 +24,6 @@ spin = { version = "0.9", default-features = false, features = [
 parking_lot = { version = "0.12", optional = true }
 futures-core = { version = "0.3", default-features = false }
 
+
 [dev-dependencies]
 serde_json = { version = "1" }

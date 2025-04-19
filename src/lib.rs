@@ -1,6 +1,7 @@
 #![no_std]
 
 use futures_core::Stream;
+use tokio::task::JoinHandle;
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
@@ -211,3 +212,12 @@ pub type HBoxAny<'a> = alloc::boxed::Box<dyn core::any::Any + 'a>;
 
 #[cfg(all(feature = "alloc", feature = "send"))]
 pub type HBoxAny<'a> = alloc::boxed::Box<dyn core::any::Any + Send + Sync + 'a>;
+
+pub trait Executor<'a>: HSendSync {
+    type Error;
+    type Future<T>: Future<Output = core::result::Result<T::Output, Self::Error>> + HSend
+    where
+        T: Future + 'a;
+
+    fn spawn<T: Future + HSend + 'a>(&self, future: T) -> Self::Future<T>;
+}
