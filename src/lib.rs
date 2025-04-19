@@ -212,11 +212,11 @@ pub type HBoxAny<'a> = alloc::boxed::Box<dyn core::any::Any + 'a>;
 #[cfg(all(feature = "alloc", feature = "send"))]
 pub type HBoxAny<'a> = alloc::boxed::Box<dyn core::any::Any + Send + Sync + 'a>;
 
-pub trait Executor<'a>: HSendSync {
+pub trait Executor: HSendSync {
     type Error;
     type Future<T>: Future<Output = core::result::Result<T::Output, Self::Error>> + HSend
     where
-        T: Future + 'a;
+        T: Future + 'static;
 
-    fn spawn<T: Future + HSend + 'a>(&self, future: T) -> Self::Future<T>;
+    fn spawn<T: Future + HSend + 'static>(&self, future: T) -> Self::Future<T>;
 }
