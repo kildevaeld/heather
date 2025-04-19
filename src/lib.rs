@@ -1,7 +1,6 @@
 #![no_std]
 
 use futures_core::Stream;
-use tokio::task::JoinHandle;
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
