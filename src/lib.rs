@@ -192,6 +192,14 @@ pub type HBoxFuture<'a, T> =
 pub type HBoxFuture<'a, T> =
     core::pin::Pin<alloc::boxed::Box<dyn core::future::Future<Output = T> + 'a + Send>>;
 
+#[cfg(all(feature = "alloc", not(feature = "send")))]
+pub type HBoxStream<'a, T> =
+    core::pin::Pin<alloc::boxed::Box<dyn futures_core::Stream<Item = T> + 'a>>;
+
+#[cfg(all(feature = "alloc", feature = "send"))]
+pub type HBoxStream<'a, T> =
+    core::pin::Pin<alloc::boxed::Box<dyn futures_core::Stream<Item = T> + 'a + Send>>;
+
 pub trait HFuture: Future + HSend {}
 
 impl<T> HFuture for T where T: Future + HSend {}

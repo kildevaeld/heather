@@ -11,14 +11,14 @@ readme = "README.md"
 description = "Nostd tools"
 
 [features]
-default = []
+# default = ["alloc"]
 send = ["spin"]
 std = ["alloc"]
 alloc = []
 parking-lot = ["dep:parking_lot", "std"]
 
 [dependencies]
-spin = { version = "0.9", default-features = false, features = [
+spin = { version = "0.10", default-features = false, features = [
     "rwlock",
 ], optional = true }
 parking_lot = { version = "0.12", optional = true }
